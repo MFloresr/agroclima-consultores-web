@@ -1,4 +1,5 @@
 // @ts-check
+// Configuración de Astro: integraciones (Svelte, Vercel, sitemap), dominio y variables de entorno tipadas.
 import { defineConfig, envField } from 'astro/config';
 
 import svelte from '@astrojs/svelte';
