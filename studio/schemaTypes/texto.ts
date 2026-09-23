@@ -1,3 +1,5 @@
+// Campo de texto con formato (Portable Text) reutilizable: párrafos, subtítulos, listas, negrita y enlaces.
+
 import {defineArrayMember, defineField} from 'sanity'
 
 /** Texto con formato sencillo: párrafos, subtítulos, listas, negrita y enlaces. */

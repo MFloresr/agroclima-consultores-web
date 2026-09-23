@@ -1,3 +1,5 @@
+// Campo de foto reutilizable con recorte (hotspot) y descripción obligatoria cuando hay imagen.
+
 import {defineField} from 'sanity'
 
 /** Campo de foto con texto alternativo obligatorio (accesibilidad y Google). */

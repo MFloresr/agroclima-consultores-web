@@ -1,3 +1,5 @@
+// Configuración de la línea de comandos de Sanity: proyecto, dataset y dirección del panel publicado.
+
 import {defineCliConfig} from 'sanity/cli'
 
 export default defineCliConfig({
