@@ -27,3 +27,6 @@ pnpm-debug.log*
 .vercel
 .env*
 !.env.example
+
+# Grafo de graphify (se regenera en local)
+graphify-out/

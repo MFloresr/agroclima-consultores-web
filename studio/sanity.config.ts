@@ -1,6 +1,7 @@
-import {defineConfig} from 'sanity'
+import {defineConfig, isDev} from 'sanity'
 import {structureTool, type StructureResolver} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
+import {esESLocale} from '@sanity/locale-es-es'
 import {CogIcon} from '@sanity/icons/Cog'
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {HomeIcon} from '@sanity/icons/Home'
@@ -32,7 +33,14 @@ export default defineConfig({
   projectId: '3cabmdy3',
   dataset: 'production',
 
-  plugins: [structureTool({structure: estructura}), visionTool()],
+  // Panel en castellano. Vision (consultas técnicas) solo en desarrollo, para no confundir a Jordi
+  plugins: [structureTool({name: 'contenido', title: 'Contenido', structure: estructura}), esESLocale(), ...(isDev ? [visionTool()] : [])],
+
+  // Funciones avanzadas que Jordi no necesita: se ocultan para simplificar el panel
+  releases: {enabled: false},
+  scheduledPublishing: {enabled: false},
+  scheduledDrafts: {enabled: false},
+  announcements: {enabled: false},
 
   schema: {
     types: schemaTypes,
