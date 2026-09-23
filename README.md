@@ -57,6 +57,14 @@ El panel lee los datos mediante `obtenerDatos()` de `src/lib/clima/index.ts`. Ho
 1. Crear un endpoint `/api/clima` que llame a FieldClimate con las claves HMAC y devuelva el formato `DatosEstacion` de `tipos.ts`, con caché de 10–15 minutos.
 2. Sustituir `fuenteEjemplo` en `index.ts` por una fuente que haga `fetch('/api/clima?finca=…')`.
 
+## Despliegue
+
+El proyecto de Vercel está conectado a este repositorio:
+
+- Cada `git push` a `main` publica la web automáticamente.
+- Cada rama o pull request genera una versión de previsualización con su propio enlace.
+- Versión de prueba actual: https://agroclima-consultores-prueba.vercel.app (no indexable por buscadores).
+
 ## Puesta en producción
 
 1. Crear en Supabase (región UE) el proyecto a nombre de AgroClima y ejecutar `supabase/migrations/0001_contactos.sql`.
