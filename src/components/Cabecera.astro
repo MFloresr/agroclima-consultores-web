@@ -1,7 +1,10 @@
 ---
 import Logo from './Logo.astro';
 import Icono from './Icono.astro';
-import { navegacion, sitio } from '../data/sitio';
+import { navegacion } from '../data/sitio';
+import { obtenerSitio } from '../lib/contenido';
+
+const sitio = await obtenerSitio();
 
 const ruta = Astro.url.pathname.replace(/\/$/, '') || '/';
 const activo = (href: string) => ruta === href || ruta.startsWith(`${href}/`);

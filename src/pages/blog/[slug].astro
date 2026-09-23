@@ -1,11 +1,12 @@
 ---
-// Blog preparado para una segunda fase. Solo se generan los artículos con borrador: false,
+// Blog preparado para una segunda fase. Solo se generan los artículos publicados en Sanity,
 // y no hay enlace en el menú hasta que AgroClima publique el primero.
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { textoAHtml } from '../../lib/sanity';
 
 export async function getStaticPaths() {
-  const articulos = await getCollection('articulos', ({ data }) => !data.borrador);
+  const articulos = await getCollection('articulos');
   return articulos.map((articulo) => ({ params: { slug: articulo.id }, props: { articulo } }));
 }
 
@@ -14,7 +15,6 @@ interface Props {
 }
 
 const { articulo } = Astro.props;
-const { Content } = await render(articulo);
 const fecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(articulo.data.fecha);
 ---
 
@@ -22,7 +22,7 @@ const fecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(art
   <article class="contenedor seccion articulo">
     <p class="antetitulo">Blog · {fecha}</p>
     <h1>{articulo.data.titulo}</h1>
-    <div class="texto"><Content /></div>
+    <div class="texto" set:html={textoAHtml(articulo.data.cuerpo)} />
   </article>
 </Base>
 
@@ -40,6 +40,10 @@ const fecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(art
   }
   .texto :global(p) {
     margin-bottom: 16px;
+  }
+  .texto :global(img) {
+    border-radius: 16px;
+    margin: 24px 0;
   }
   .texto :global(h2) {
     font-size: 28px;

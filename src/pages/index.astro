@@ -7,7 +7,9 @@ import TarjetaServicio from '../components/TarjetaServicio.astro';
 import TarjetaCaso from '../components/TarjetaCaso.astro';
 import SeccionContacto from '../components/SeccionContacto.astro';
 import ResumenClima from '../components/clima/ResumenClima.svelte';
-import { sitio } from '../data/sitio';
+import { obtenerPortada, obtenerSitio, obtenerSobre } from '../lib/contenido';
+
+const [sitio, portada, sobre] = await Promise.all([obtenerSitio(), obtenerPortada(), obtenerSobre()]);
 
 const servicios = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
 const casos = (await getCollection('casos')).sort((a, b) => a.data.orden - b.data.orden);
@@ -23,13 +25,9 @@ const cultivos = [
 <Base titulo={sitio.nombre}>
   <section class="contenedor portada">
     <div class="texto-portada">
-      <p class="antetitulo">Consultoría meteorológica agrícola · Lleida</p>
-      <h1>El clima de tu finca, medido y explicado para decidir mejor</h1>
-      <p class="entrada">
-        Instalamos estaciones meteorológicas en tu explotación, te avisamos por WhatsApp y email de heladas, lluvias
-        intensas y viento fuerte, y te ayudamos a decidir riegos, tratamientos y cosecha. Para agricultores y cooperativas
-        de frutal, viñedo, cereal y olivo.
-      </p>
+      {portada.antetitulo && <p class="antetitulo">{portada.antetitulo}</p>}
+      <h1>{portada.titulo}</h1>
+      <p class="entrada">{portada.entrada}</p>
       <div class="botones">
         <a class="btn btn-principal btn-grande" href="/contacto">Pedir presupuesto</a>
         <a class="btn btn-borde btn-grande" href="/datos-climaticos">Ver datos de ejemplo</a>
@@ -37,7 +35,14 @@ const cultivos = [
       <p class="confianza">Ingeniero agrónomo · {sitio.zona.join(', ')}</p>
     </div>
     <div class="imagen-portada">
-      <Foto descripcion="Estación meteorológica en una finca de frutales al amanecer" alto="100%" />
+      <Foto
+        imagen={portada.foto}
+        descripcion="Estación meteorológica en una finca de frutales al amanecer"
+        alto="100%"
+        proporcion={1}
+        sizes="(max-width: 1100px) 100vw, 50vw"
+        prioridad
+      />
     </div>
   </section>
 
@@ -71,11 +76,8 @@ const cultivos = [
     <div class="bloque-datos">
       <div class="texto-datos">
         <p class="antetitulo">Ejemplo de datos climáticos</p>
-        <h2 id="titulo-datos">Así verás lo que pasa en tu finca, hora a hora</h2>
-        <p>
-          Temperatura, humedad, lluvia y viento medidos por tu propia estación, con gráficos de las últimas 24 horas y
-          avisos cuando toca actuar.
-        </p>
+        <h2 id="titulo-datos">{portada.datosTitulo ?? 'Así verás lo que pasa en tu finca, hora a hora'}</h2>
+        {portada.datosTexto && <p>{portada.datosTexto}</p>}
         <div class="botones">
           <a class="btn btn-claro" href="/datos-climaticos">Ver el panel completo</a>
           <span class="marca-ejemplo">Datos de ejemplo</span>
@@ -96,14 +98,13 @@ const cultivos = [
   </section>
 
   <section id="sobre" class="contenedor sobre">
-    <div class="imagen-sobre"><Foto descripcion="Jordi Puig revisando una estación en una finca" alto="440px" /></div>
+    <div class="imagen-sobre">
+      <Foto imagen={sobre.foto} descripcion="Jordi Puig revisando una estación en una finca" alto="440px" proporcion={12 / 11} />
+    </div>
     <div class="texto-sobre">
       <p class="antetitulo">Sobre AgroClima</p>
-      <h2>Soy Jordi Puig, ingeniero agrónomo, y trabajo contigo en tu finca</h2>
-      <p>
-        Fundé AgroClima Consultores en Lleida para que las decisiones del campo se tomen con los datos de tu propia
-        parcela, no solo con la previsión general.
-      </p>
+      <h2>{sobre.titulo}</h2>
+      <p>{sobre.entradilla}</p>
       <a class="enlace-flecha" href="/sobre-agroclima">Conoce AgroClima <Icono nombre="flecha" tamano={18} /></a>
     </div>
   </section>

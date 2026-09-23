@@ -10,7 +10,7 @@ Web de agroclimaconsultores.es: presentación de servicios, panel de datos clim�
 | Partes interactivas | Svelte 5 (panel de datos, resumen de la home, mapa) |
 | Gráficos | uPlot |
 | Mapa | Leaflet + OpenStreetMap |
-| Contenido | Colecciones de Astro en `src/content` (se migrarán a Sanity) |
+| Contenido | Sanity (panel en https://agroclima-consultores.sanity.studio), leído al compilar |
 | Formulario | Endpoint `/api/contacto` → Supabase (UE) + aviso por email con Resend |
 | Antispam | Campo trampa + Cloudflare Turnstile (opcional) |
 | Hosting | Vercel (adaptador `@astrojs/vercel`) |
@@ -30,9 +30,11 @@ Otros comandos: `npx astro check` (tipos), `npm run build` (compilación).
 ## Estructura
 
 ```
+studio/               Panel de edición de Sanity (modelo de contenido en studio/schemaTypes)
 src/
-  content/            Servicios, casos de éxito y artículos del blog (Markdown)
-  content.config.ts   Esquema del contenido
+  content.config.ts   Colecciones que se descargan de Sanity (servicios, casos, blog)
+  lib/sanity.ts       Cliente de Sanity, fotos optimizadas y texto con formato → HTML
+  lib/contenido.ts    Documentos únicos: datos de contacto, portada, sobre AgroClima
   data/               Datos de contacto, navegación, iconos, cultivos
   lib/clima/          Datos climáticos: formato común + fuente de ejemplo
   lib/contactos.ts    Validación, guardado en Supabase y aviso por email
@@ -41,6 +43,13 @@ src/
 supabase/migrations/  SQL de la tabla de contactos
 vercel.json           Cron diario de mantenimiento
 ```
+
+## Contenido (Sanity)
+
+- Proyecto `3cabmdy3`, conjunto de datos `production` (lectura pública: solo contenido de la web, nunca los contactos).
+- Panel: https://agroclima-consultores.sanity.studio. Desarrollo local del panel: `cd studio && npm install && npm run dev`.
+- Al publicar en el panel, un webhook de Sanity llama a un deploy hook de Vercel y la web se vuelve a compilar (1 minuto aprox.).
+- Tras cambiar el modelo de contenido: `cd studio && npx sanity deploy`.
 
 ## Cómo funciona el formulario
 
@@ -75,9 +84,8 @@ El proyecto de Vercel está conectado a este repositorio:
 ## Pendiente de AgroClima
 
 - [ ] Logo oficial (sustituir `src/components/Logo.astro` y `public/favicon.svg`)
-- [ ] Teléfono y número de WhatsApp reales (`src/data/sitio.ts`)
-- [ ] Fotos (sustituir los componentes `Foto` por imágenes reales)
-- [ ] Datos reales de los dos casos de éxito (`src/content/casos`)
-- [ ] Años de experiencia, cifras y frase de Jordi (`src/pages/sobre-agroclima.astro`)
+- [ ] Teléfono y número de WhatsApp reales (en el panel: «Datos de contacto»)
+- [ ] Fotos (se suben en el panel; mientras tanto se ve un hueco rayado)
+- [ ] Datos reales de los dos casos de éxito (en el panel)
+- [ ] Años de experiencia, cifras y frase de Jordi (en el panel: «Sobre AgroClima»)
 - [ ] NIF y domicilio en los textos legales, y revisión por un asesor
-- [ ] Migrar el contenido a Sanity

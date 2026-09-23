@@ -1,6 +1,8 @@
 ---
 import Icono from './Icono.astro';
-import { sitio } from '../data/sitio';
+import { obtenerSitio } from '../lib/contenido';
+
+const sitio = await obtenerSitio();
 ---
 
 <nav class="barra-movil" aria-label="Contacto rápido">

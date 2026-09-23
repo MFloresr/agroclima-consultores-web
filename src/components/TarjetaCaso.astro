@@ -10,7 +10,7 @@ const { titulo, cliente, cultivo, comarca, resumen, resultado, resultadoEtiqueta
 ---
 
 <article class="tarjeta caso">
-  <div class="imagen"><Foto descripcion={foto} alto="200px" /></div>
+  <div class="imagen"><Foto imagen={foto} descripcion={`${cultivo} en ${comarca}`} alto="200px" proporcion={3} sizes="(max-width: 700px) 100vw, 50vw" /></div>
   <div class="cuerpo">
     <span class="etiqueta">{cultivo} · {comarca}</span>
     <h3>{titulo}</h3>

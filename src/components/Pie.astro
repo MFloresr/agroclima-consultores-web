@@ -1,6 +1,9 @@
 ---
 import Logo from './Logo.astro';
-import { navegacion, sitio } from '../data/sitio';
+import { navegacion } from '../data/sitio';
+import { obtenerSitio } from '../lib/contenido';
+
+const sitio = await obtenerSitio();
 ---
 
 <footer class="pie">

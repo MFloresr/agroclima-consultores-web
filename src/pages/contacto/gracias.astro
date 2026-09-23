@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Icono from '../../components/Icono.astro';
-import { sitio } from '../../data/sitio';
+import { obtenerSitio } from '../../lib/contenido';
+
+const sitio = await obtenerSitio();
 ---
 
 <Base titulo="Solicitud recibida" sinIndexar>

@@ -1,6 +1,8 @@
 ---
 import TextoLegal from '../components/TextoLegal.astro';
-import { sitio } from '../data/sitio';
+import { obtenerSitio } from '../lib/contenido';
+
+const sitio = await obtenerSitio();
 ---
 
 <TextoLegal titulo="Aviso legal" actualizado="octubre de 2026">

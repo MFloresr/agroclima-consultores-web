@@ -2,7 +2,9 @@
 import FormularioContacto from './FormularioContacto.astro';
 import MapaZona from './MapaZona.svelte';
 import Icono from './Icono.astro';
-import { sitio } from '../data/sitio';
+import { obtenerSitio } from '../lib/contenido';
+
+const sitio = await obtenerSitio();
 
 interface Props {
   tituloNivel?: 'h1' | 'h2';

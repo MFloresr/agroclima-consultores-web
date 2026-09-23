@@ -1,18 +1,60 @@
 ---
-// Hueco para una foto real. PENDIENTE: sustituir por <Image /> con las fotos de AgroClima.
+// Foto de Sanity optimizada (varios tamaños, WebP/AVIF). Si aún no hay foto, muestra un hueco rayado.
+import { srcsetImagen, tieneImagen, urlImagen, type ImagenSanity } from '../lib/sanity';
+
 interface Props {
+  imagen?: ImagenSanity | null;
+  /** Texto del hueco y alternativa si la foto no tiene descripción */
   descripcion: string;
   alto?: string;
+  /** Ancho / alto de la foto recortada */
+  proporcion?: number;
+  sizes?: string;
+  /** true para la foto principal de la página: se carga antes */
+  prioridad?: boolean;
   class?: string;
 }
-const { descripcion, alto = '100%', class: clase } = Astro.props;
+
+const {
+  imagen,
+  descripcion,
+  alto = '100%',
+  proporcion = 4 / 3,
+  sizes = '(max-width: 900px) 100vw, 50vw',
+  prioridad = false,
+  class: clase,
+} = Astro.props;
+const anchos = [400, 700, 1000, 1400];
 ---
 
-<div class:list={['foto-pendiente', clase]} style={`min-height: ${alto}`} role="img" aria-label={descripcion}>
-  <span>Foto: {descripcion}</span>
-</div>
+{
+  tieneImagen(imagen) ? (
+    <img
+      class:list={['foto', clase]}
+      src={urlImagen(imagen, 1000, Math.round(1000 / proporcion))}
+      srcset={srcsetImagen(imagen, anchos, proporcion)}
+      sizes={sizes}
+      width="1000"
+      height={Math.round(1000 / proporcion)}
+      alt={imagen.alt ?? descripcion}
+      loading={prioridad ? 'eager' : 'lazy'}
+      fetchpriority={prioridad ? 'high' : 'auto'}
+      decoding="async"
+      style={`height: ${alto}`}
+    />
+  ) : (
+    <div class:list={['foto-pendiente', clase]} style={`min-height: ${alto}`} role="img" aria-label={descripcion}>
+      <span>Foto: {descripcion}</span>
+    </div>
+  )
+}
 
 <style>
+  .foto {
+    width: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
   .foto-pendiente {
     display: flex;
     align-items: center;

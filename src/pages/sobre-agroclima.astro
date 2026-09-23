@@ -1,33 +1,33 @@
 ---
 import Base from '../layouts/Base.astro';
 import Foto from '../components/Foto.astro';
-import { sitio } from '../data/sitio';
+import { obtenerSobre } from '../lib/contenido';
+import { textoAHtml } from '../lib/sanity';
+
+const sobre = await obtenerSobre();
 ---
 
-<Base
-  titulo="Sobre AgroClima"
-  descripcion="Jordi Puig, ingeniero agrónomo, fundó AgroClima Consultores en Lleida para que las decisiones del campo se tomen con datos de la propia finca."
->
+<Base titulo="Sobre AgroClima" descripcion={sobre.entradilla}>
   <section class="contenedor seccion sobre">
-    <div class="imagen"><Foto descripcion="Jordi Puig revisando una estación en una finca" alto="520px" /></div>
+    <div class="imagen">
+      <Foto imagen={sobre.foto} descripcion="Jordi Puig revisando una estación en una finca" alto="520px" proporcion={12 / 13} prioridad />
+    </div>
     <div class="texto">
       <p class="antetitulo">Sobre AgroClima</p>
-      <h1>Soy Jordi Puig, ingeniero agrónomo, y trabajo contigo en tu finca</h1>
-      <p>
-        Fundé AgroClima Consultores en Lleida para que las decisiones del campo se tomen con los datos de tu propia
-        parcela, no solo con la previsión general. Una helada, una tormenta o una semana de humedad pueden cambiar una
-        campaña, y con buena información se puede actuar a tiempo.
-      </p>
-      <p>
-        Trabajo con agricultores y cooperativas de {sitio.zona.join(', ')}: instalo y mantengo estaciones
-        meteorológicas, envío alertas, preparo informes mensuales y asesoro en persona o a distancia.
-      </p>
-      <p class="pendiente">[PENDIENTE: 1–2 frases de Jordi sobre su trayectoria y por qué se dedica a esto]</p>
-      <dl class="cifras">
-        <div><dt>años de experiencia</dt><dd>[AÑOS]</dd></div>
-        <div><dt>estaciones instaladas</dt><dd>[N]</dd></div>
-        <div><dt>cooperativas y fincas</dt><dd>[N]</dd></div>
-      </dl>
+      <h1>{sobre.titulo}</h1>
+      <div class="cuerpo" set:html={textoAHtml(sobre.texto)} />
+      {
+        sobre.cifras && sobre.cifras.length > 0 && (
+          <dl class="cifras">
+            {sobre.cifras.map((c) => (
+              <div>
+                <dt>{c.etiqueta}</dt>
+                <dd>{c.valor}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
       <a class="btn btn-principal btn-grande" href="/contacto">Hablemos de tu finca</a>
     </div>
   </section>
@@ -55,12 +55,17 @@ import { sitio } from '../data/sitio';
   h1 {
     font-size: clamp(32px, 4vw, 46px);
   }
-  .texto > p:not(.antetitulo) {
+  .cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     font-size: 18px;
     color: var(--tinta-2);
   }
-  .pendiente {
-    font-style: italic;
+  .cuerpo :global(h2) {
+    font-size: 26px;
+    color: var(--tinta);
+    margin-top: 12px;
   }
   .cifras {
     margin: 8px 0;

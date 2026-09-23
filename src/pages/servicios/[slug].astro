@@ -1,7 +1,8 @@
 ---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Icono from '../../components/Icono.astro';
+import { textoAHtml } from '../../lib/sanity';
 
 export async function getStaticPaths() {
   const servicios = await getCollection('servicios');
@@ -13,7 +14,6 @@ interface Props {
 }
 
 const { servicio } = Astro.props;
-const { Content } = await render(servicio);
 const { titulo, tituloCorto, resumen, beneficios, icono, seoDescripcion } = servicio.data;
 const otros = (await getCollection('servicios'))
   .filter((s) => s.id !== servicio.id)
@@ -31,9 +31,7 @@ const solicitar = `/contacto?servicio=${encodeURIComponent(tituloCorto)}#formula
     </header>
 
     <div class="cuerpo">
-      <div class="texto">
-        <Content />
-      </div>
+      <div class="texto" set:html={textoAHtml(servicio.data.cuerpo)} />
       <aside class="tarjeta lateral">
         <h2>Lo que ganas</h2>
         <ul>
