@@ -86,6 +86,13 @@ const errorInicial = Astro.url.searchParams.get('error');
 </form>
 
 <script>
+  // Widget antispam de Cloudflare (solo existe si hay clave de Turnstile configurada)
+  declare global {
+    interface Window {
+      turnstile?: { reset: (widget?: string | HTMLElement) => void };
+    }
+  }
+
   const CLAVE = 'agroclima-formulario';
   const formulario = document.querySelector<HTMLFormElement>('#formulario');
 
@@ -161,8 +168,11 @@ const errorInicial = Astro.url.searchParams.get('error');
           if (control instanceof HTMLElement) control.setAttribute('aria-invalid', 'true');
         }
         mostrarEstado(resultado.mensaje, 'error');
+        // Cada comprobación antispam vale para un solo envío: se pide una nueva para reintentar
+        window.turnstile?.reset();
       } catch {
         mostrarEstado('No se ha podido enviar, puede que no haya cobertura. Tus datos siguen aquí: vuelve a intentarlo en un momento o llámanos.', 'error');
+        window.turnstile?.reset();
       } finally {
         boton.disabled = false;
         boton.textContent = 'Enviar solicitud';
@@ -294,6 +304,10 @@ const errorInicial = Astro.url.searchParams.get('error');
     margin: 0;
     flex-shrink: 0;
     accent-color: var(--verde);
+  }
+  /* Espacio reservado para el widget de Cloudflare, que se carga después */
+  .cf-turnstile {
+    min-height: 65px;
   }
   .enviar {
     align-self: flex-start;
