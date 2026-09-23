@@ -36,6 +36,7 @@ export const esquemaContacto = z.object({
   privacidad: z.literal('si', { message: 'Debes aceptar la política de privacidad' }),
 });
 
+/** Solicitud ya validada y normalizada (hectáreas como número o null). */
 export type Contacto = z.infer<typeof esquemaContacto>;
 
 interface FilaContacto {
@@ -64,6 +65,10 @@ function cabecerasSupabase(extra: Record<string, string> = {}) {
   return cabeceras;
 }
 
+/**
+ * Inserta la solicitud en la tabla `contactos` de Supabase (API REST) y devuelve la fila creada.
+ * Lanza un error si Supabase no responde con éxito: el endpoint lo convierte en un 502.
+ */
 export async function guardarContacto(c: Contacto, origen: string): Promise<FilaContacto> {
   const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/contactos`, {
     method: 'POST',
@@ -106,6 +111,10 @@ export async function contactosSinAviso(limite = 20): Promise<FilaContacto[]> {
   return (await respuesta.json()) as FilaContacto[];
 }
 
+/**
+ * Envía a AgroClima el aviso de una solicitud nueva (Resend). Usa reply_to con el email del
+ * agricultor para que «Responder» le escriba directamente a él.
+ */
 export async function enviarAviso(c: {
   nombre: string;
   telefono: string;

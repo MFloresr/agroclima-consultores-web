@@ -4,6 +4,7 @@ import {defineField, defineType} from 'sanity'
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {campoTexto} from './texto'
 
+/** Tipo de documento «Artículo del blog». */
 export const articulo = defineType({
   name: 'articulo',
   title: 'Artículo del blog',

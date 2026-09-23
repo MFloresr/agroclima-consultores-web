@@ -7,6 +7,7 @@ import {portada} from './portada'
 import {servicio} from './servicio'
 import {sobre} from './sobre'
 
+/** Tipos de contenido registrados en el panel, en el orden del botón «Crear». */
 export const schemaTypes = [portada, servicio, caso, sobre, articulo, ajustes]
 
 /** Documentos únicos: solo existe uno de cada y no se pueden crear ni borrar. */

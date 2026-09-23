@@ -6,6 +6,7 @@ import { createImageUrlBuilder } from '@sanity/image-url';
 import { toHTML, uriLooksSafe } from '@portabletext/to-html';
 import type { PortableTextBlock } from '@portabletext/types';
 
+/** Cliente de Sanity de solo lectura del contenido publicado (sin CDN, para compilar con lo último). */
 export const sanity = createClient({
   projectId: '3cabmdy3',
   dataset: 'production',
@@ -16,6 +17,7 @@ export const sanity = createClient({
 
 const constructor = createImageUrlBuilder(sanity);
 
+/** Imagen tal como la guarda Sanity: referencia al archivo, descripción y punto de interés. */
 export interface ImagenSanity {
   asset?: { _ref: string };
   alt?: string;
@@ -23,6 +25,7 @@ export interface ImagenSanity {
   crop?: Record<string, number>;
 }
 
+/** true si el campo de foto tiene una imagen subida (y no solo la descripción). */
 export const tieneImagen = (imagen?: ImagenSanity | null): imagen is ImagenSanity & { asset: { _ref: string } } =>
   Boolean(imagen?.asset?._ref);
 

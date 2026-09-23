@@ -3,6 +3,7 @@
 import {defineField, defineType} from 'sanity'
 import {CogIcon} from '@sanity/icons/Cog'
 
+/** Tipo de documento «Datos de contacto». */
 export const ajustes = defineType({
   name: 'ajustes',
   title: 'Datos de contacto',

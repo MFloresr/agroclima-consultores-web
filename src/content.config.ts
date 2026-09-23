@@ -72,4 +72,5 @@ const articulos = defineCollection({
   }),
 });
 
+/** Colecciones que Astro registra: servicios, casos de éxito y artículos del blog. */
 export const collections = { servicios, casos, articulos };

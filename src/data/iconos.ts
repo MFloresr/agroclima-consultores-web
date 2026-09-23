@@ -1,4 +1,6 @@
 // Trazados SVG (viewBox 0 0 24 24, trazo) de los iconos de la web.
+
+/** Trazados SVG de los iconos, por nombre. Se dibujan con el componente Icono.astro. */
 export const iconos = {
   estacion: 'M12 21V9M8 21h8M12 9a3 3 0 1 0 0-6a3 3 0 0 0 0 6M5 6a8 8 0 0 1 2-3M19 6a8 8 0 0 0-2-3',
   alerta: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',
@@ -24,4 +26,5 @@ export const iconos = {
   olivo: 'M4 20C9 15 14 10 20 4M8 16c-1-2 0-4 2-5 1 2 0 4-2 5zM13 11c-1-2 0-4 2-5 1 2 0 4-2 5zM12 15c2-1 4 0 5 2-2 1-4 0-5-2z',
 } as const;
 
+/** Nombre válido de icono (se comprueba al compilar). */
 export type NombreIcono = keyof typeof iconos;

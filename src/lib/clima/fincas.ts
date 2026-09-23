@@ -3,6 +3,7 @@
 import type { Finca } from './tipos';
 
 // Fincas de ejemplo, una por comarca de la zona que cubre AgroClima.
+/** Las tres fincas de ejemplo que se pueden elegir en el panel de datos. */
 export const fincasEjemplo: Finca[] = [
   {
     id: 'alcarras',
@@ -33,4 +34,5 @@ export const fincasEjemplo: Finca[] = [
   },
 ];
 
+/** Finca que se muestra al abrir el panel (Alcarràs). */
 export const fincaPorDefecto = fincasEjemplo[0].id;

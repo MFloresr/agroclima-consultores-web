@@ -5,6 +5,7 @@ import {UserIcon} from '@sanity/icons/User'
 import {campoFoto} from './imagen'
 import {campoTexto} from './texto'
 
+/** Tipo de documento «Sobre AgroClima». */
 export const sobre = defineType({
   name: 'sobre',
   title: 'Sobre AgroClima',

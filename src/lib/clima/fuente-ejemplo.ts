@@ -140,6 +140,7 @@ function et0Hargreaves(fecha: Date, latitud: number, tMax: number, tMin: number)
   return 0.0023 * (tMedia + 17.8) * Math.sqrt(Math.max(0, tMax - tMin)) * 0.408 * ra;
 }
 
+/** Alerta de ejemplo según la época: heladas (mar–may), viento (jun–ago) o lluvia intensa (resto del año). */
 export function alertaDeEjemplo(mes: number): Alerta {
   if (mes >= 2 && mes <= 4) {
     return {
@@ -159,6 +160,10 @@ export function alertaDeEjemplo(mes: number): Alerta {
   };
 }
 
+/**
+ * Fuente de datos de ejemplo: genera los datos completos de una estación (24 h, extremos del día,
+ * viento, lluvia, previsión e indicadores agronómicos) para la finca y hora indicadas.
+ */
 export const fuenteEjemplo: FuenteDatos = async (fincaId, ahora = new Date()) => {
   const finca = fincasEjemplo.find((f) => f.id === fincaId) ?? fincasEjemplo[0];
   const id = finca.id;

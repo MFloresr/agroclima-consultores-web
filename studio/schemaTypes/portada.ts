@@ -4,6 +4,7 @@ import {defineField, defineType} from 'sanity'
 import {HomeIcon} from '@sanity/icons/Home'
 import {campoFoto} from './imagen'
 
+/** Tipo de documento «Portada». */
 export const portada = defineType({
   name: 'portada',
   title: 'Portada',

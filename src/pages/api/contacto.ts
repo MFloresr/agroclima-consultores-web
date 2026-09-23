@@ -14,6 +14,7 @@ import {
   marcarEmailEnviado,
 } from '../../lib/contactos';
 
+/** Se ejecuta en el servidor en cada petición (no se precompila). */
 export const prerender = false;
 
 function responder(request: Request, estado: number, cuerpo: { ok: boolean; mensaje: string; errores?: Record<string, string> }) {
@@ -36,6 +37,7 @@ async function verificarTurnstile(token: string | null, ip: string | null) {
   return resultado.success;
 }
 
+/** Recibe y procesa una solicitud del formulario de contacto. */
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   let formulario: FormData;
   try {

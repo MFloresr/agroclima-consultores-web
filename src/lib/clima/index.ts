@@ -6,6 +6,7 @@ import { fuenteEjemplo } from './fuente-ejemplo';
 export { alertaDeEjemplo } from './fuente-ejemplo';
 import type { FuenteDatos } from './tipos';
 
+/** Fuente de datos que usa el panel. Hoy, la de ejemplo; en la fase 2, la API de las estaciones Pessl. */
 export const obtenerDatos: FuenteDatos = fuenteEjemplo;
 
 export { fincasEjemplo, fincaPorDefecto } from './fincas';

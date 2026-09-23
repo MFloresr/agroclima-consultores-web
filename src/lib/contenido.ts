@@ -13,6 +13,7 @@ interface Ajustes {
   zona: string[];
 }
 
+/** Contenido del documento «Portada» en Sanity. */
 export interface Portada {
   antetitulo?: string;
   titulo: string;
@@ -22,6 +23,7 @@ export interface Portada {
   datosTexto?: string;
 }
 
+/** Contenido del documento «Sobre AgroClima» en Sanity. */
 export interface Sobre {
   titulo: string;
   entradilla: string;
@@ -60,6 +62,7 @@ export async function obtenerSitio() {
   };
 }
 
+/** Datos de contacto listos para usar en los componentes. */
 export type Sitio = Awaited<ReturnType<typeof obtenerSitio>>;
 
 /** Textos y foto de la portada (documento único «portada»). */

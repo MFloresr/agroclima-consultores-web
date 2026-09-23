@@ -4,6 +4,7 @@ import {defineField, defineType} from 'sanity'
 import {BulbOutlineIcon} from '@sanity/icons/BulbOutline'
 import {campoTexto} from './texto'
 
+/** Tipo de documento «Servicio». */
 export const servicio = defineType({
   name: 'servicio',
   title: 'Servicio',

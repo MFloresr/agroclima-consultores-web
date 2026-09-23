@@ -1,6 +1,7 @@
 // Datos que no cambian. Teléfono, WhatsApp, email y zona se editan en Sanity
 // ("Datos de contacto") y se leen con obtenerSitio() de src/lib/contenido.ts.
 
+/** Datos de la web que no se editan en el panel: nombre, descripción para buscadores y año. */
 export const sitioFijo = {
   nombre: 'AgroClima Consultores',
   descripcion:
@@ -8,6 +9,7 @@ export const sitioFijo = {
   anio: 2026,
 } as const;
 
+/** Enlaces del menú principal y del pie, en orden. */
 export const navegacion = [
   { href: '/servicios', texto: 'Servicios' },
   { href: '/datos-climaticos', texto: 'Datos climáticos' },
