@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fincasEjemplo, fincaPorDefecto, hora, num, obtenerDatos, type DatosEstacion } from '../../lib/clima';
+  import { alertaDeEjemplo, fincasEjemplo, fincaPorDefecto, hora, num, obtenerDatos, type DatosEstacion } from '../../lib/clima';
   import GraficoLinea from './GraficoLinea.svelte';
 
   const iconos = {
@@ -24,6 +24,12 @@
     });
   });
 
+  // Todo lo que se puede saber antes de cargar los datos se pinta desde el principio,
+  // y el resto reserva su espacio, para que la página no "salte" al cargar.
+  const finca = $derived(fincasEjemplo.find((f) => f.id === fincaId) ?? fincasEjemplo[0]);
+  const alerta = $derived(datos?.alerta ?? alertaDeEjemplo(new Date().getMonth()));
+  const huecosPrevision = Array.from({ length: 8 }, (_, i) => ({ t: -1 - i, temp: 0, esNoche: false, probLluvia: 0 }));
+
   const temperatura = $derived(datos?.ultimas24h.map((p) => ({ t: p.t, v: p.temp })) ?? []);
   const humedad = $derived(datos?.ultimas24h.map((p) => ({ t: p.t, v: p.hum })) ?? []);
   const rangoTemp = $derived.by(() => {
@@ -37,13 +43,9 @@
   <div class="cabecera-panel">
     <div class="titulos">
       <p class="antetitulo">Ejemplo de datos climáticos</p>
-      <h1>{datos?.finca.nombre ?? 'Panel de la finca'}</h1>
+      <h1>{finca.nombre}</h1>
       <p class="sub">
-        {#if datos}
-          {datos.finca.comarca} · {datos.finca.cultivo} · Actualizado hoy a las {hora(datos.actualizado)}
-        {:else}
-          Cargando datos…
-        {/if}
+        {finca.comarca} · {finca.cultivo} · Actualizado hoy a las {datos ? hora(datos.actualizado) : '--:--'}
       </p>
     </div>
     <p class="aviso-ejemplo">
@@ -67,21 +69,21 @@
       <p class="detalle">
         {#if datos}
           Mín. <strong>{num(datos.hoy.min)}</strong> ({hora(datos.hoy.horaMin)}) · Máx. <strong>{num(datos.hoy.max)}</strong> ({hora(datos.hoy.horaMax)})
-        {/if}
+        {:else}&nbsp;{/if}
       </p>
     </div>
     <div class="tarjeta kpi">
       <p class="cap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={iconos.humedad}></path></svg>Humedad relativa</p>
       <p class="grande">{datos?.actual.hum ?? '–'} <span>%</span></p>
       <p class="detalle">
-        {#if datos}Máx. <strong>{datos.hoy.humMax} %</strong> ({hora(datos.hoy.horaHumMax)}){/if}
+        {#if datos}Máx. <strong>{datos.hoy.humMax} %</strong> ({hora(datos.hoy.horaHumMax)}){:else}&nbsp;{/if}
       </p>
     </div>
     <div class="tarjeta kpi">
       <p class="cap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={iconos.lluvia}></path></svg>Lluvia acumulada</p>
       <p class="grande">{datos ? num(datos.hoy.lluvia) : '–'} <span>mm hoy</span></p>
       <p class="detalle">
-        {#if datos}<strong>{num(datos.lluvia7d)} mm</strong> en los últimos 7 días{/if}
+        {#if datos}<strong>{num(datos.lluvia7d)} mm</strong> en los últimos 7 días{:else}&nbsp;{/if}
       </p>
     </div>
     <div class="tarjeta kpi viento">
@@ -89,7 +91,7 @@
         <p class="cap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={iconos.viento}></path></svg>Viento</p>
         <p class="grande">{datos?.actual.viento ?? '–'} <span>km/h</span></p>
         <p class="detalle">
-          {#if datos}{datos.actual.direccionNombre} · racha <strong>{datos.actual.racha}</strong>{/if}
+          {#if datos}{datos.actual.direccionNombre} · racha <strong>{datos.actual.racha}</strong>{:else}&nbsp;{/if}
         </p>
       </div>
       <svg class="brujula" width="84" height="84" viewBox="0 0 84 84" role="img" aria-label={`Dirección del viento: ${datos?.actual.direccionNombre ?? ''}`}>
@@ -105,16 +107,14 @@
     </div>
   </div>
 
-  {#if datos?.alerta}
-    <div class="alerta">
+  <div class="alerta">
       <span class="icono-alerta"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={iconos.alerta}></path></svg></span>
       <div>
-        <p class="titulo-alerta">Ejemplo de alerta · {datos.alerta.titulo}</p>
-        <p>{datos.alerta.texto}</p>
+        <p class="titulo-alerta">Ejemplo de alerta · {alerta.titulo}</p>
+        <p>{alerta.texto}</p>
       </div>
       <span class="canal">Así llegaría por WhatsApp y email</span>
     </div>
-  {/if}
 
   <div class="graficos">
     <section class="tarjeta bloque">
@@ -139,11 +139,11 @@
     <section class="tarjeta bloque">
       <div class="cabecera-bloque"><h2>Previsión próximas horas</h2></div>
       <ol class="horas">
-        {#each datos?.prevision ?? [] as h (h.t)}
+        {#each datos?.prevision ?? huecosPrevision as h (h.t)}
           <li>
-            <span class="hora">{hora(h.t)}</span>
+            <span class="hora">{h.t < 0 ? '--:--' : hora(h.t)}</span>
             <svg width="30" height="30" viewBox="0 0 200 200" fill="none" stroke="#1E2A22" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={h.esNoche ? luna : sol}></path></svg>
-            <span class="temp">{h.temp}°</span>
+            <span class="temp">{h.t < 0 ? '–' : h.temp}°</span>
             <span class="solo-lectores">{h.esNoche ? 'Despejado, noche' : 'Soleado'}</span>
           </li>
         {/each}
@@ -331,7 +331,7 @@
     color: var(--suave);
   }
   .hueco {
-    height: 260px;
+    height: 256px;
     border-radius: 12px;
     background: var(--arena);
   }

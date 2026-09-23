@@ -31,22 +31,22 @@
     <div>
       <dt>Temperatura</dt>
       <dd>{datos ? `${num(datos.actual.temp)} °C` : '–'}</dd>
-      <dd class="sub">{datos ? `mín. ${num(datos.hoy.min)} · máx. ${num(datos.hoy.max)}` : ''}</dd>
+      <dd class="sub">{datos ? `mín. ${num(datos.hoy.min)} · máx. ${num(datos.hoy.max)}` : ' '}</dd>
     </div>
     <div>
       <dt>Humedad</dt>
       <dd>{datos ? `${datos.actual.hum} %` : '–'}</dd>
-      <dd class="sub">{datos ? `máx. ${datos.hoy.humMax} % hoy` : ''}</dd>
+      <dd class="sub">{datos ? `máx. ${datos.hoy.humMax} % hoy` : ' '}</dd>
     </div>
     <div>
       <dt>Lluvia</dt>
       <dd>{datos ? `${num(datos.hoy.lluvia)} mm` : '–'}</dd>
-      <dd class="sub">{datos ? `${num(datos.lluvia7d)} mm en 7 días` : ''}</dd>
+      <dd class="sub">{datos ? `${num(datos.lluvia7d)} mm en 7 días` : ' '}</dd>
     </div>
     <div>
       <dt>Viento</dt>
       <dd>{datos ? `${datos.actual.viento} km/h` : '–'}</dd>
-      <dd class="sub">{datos ? `${datos.actual.direccionNombre.split(' ')[0]} · racha ${datos.actual.racha}` : ''}</dd>
+      <dd class="sub">{datos ? `${datos.actual.direccionNombre.split(' ')[0]} · racha ${datos.actual.racha}` : ' '}</dd>
     </div>
   </dl>
   <div class="grafico">

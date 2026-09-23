@@ -140,7 +140,7 @@ function et0Hargreaves(fecha: Date, latitud: number, tMax: number, tMin: number)
   return 0.0023 * (tMedia + 17.8) * Math.sqrt(Math.max(0, tMax - tMin)) * 0.408 * ra;
 }
 
-function alertaDeEjemplo(mes: number): Alerta {
+export function alertaDeEjemplo(mes: number): Alerta {
   if (mes >= 2 && mes <= 4) {
     return {
       titulo: 'Riesgo de helada esta madrugada',

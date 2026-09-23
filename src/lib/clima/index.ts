@@ -3,6 +3,7 @@
 // (/api/clima) conectado a la API de Pessl FieldClimate. El panel no cambia.
 
 import { fuenteEjemplo } from './fuente-ejemplo';
+export { alertaDeEjemplo } from './fuente-ejemplo';
 import type { FuenteDatos } from './tipos';
 
 export const obtenerDatos: FuenteDatos = fuenteEjemplo;

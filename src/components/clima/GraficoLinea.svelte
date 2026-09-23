@@ -85,7 +85,7 @@
   });
 </script>
 
-<div class="grafico" bind:this={contenedor} role="img" aria-label={resumen} style={`min-height: ${alto + 40}px`}></div>
+<div class="grafico" bind:this={contenedor} role="img" aria-label={resumen} style={`height: ${alto + 36}px`}></div>
 
 <style>
   .grafico {
