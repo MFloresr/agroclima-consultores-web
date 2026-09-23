@@ -1,0 +1,43 @@
+---
+import TextoLegal from '../components/TextoLegal.astro';
+---
+
+<TextoLegal titulo="Política de cookies" actualizado="octubre de 2026">
+  <h2>Esta web no usa cookies de publicidad ni de seguimiento</h2>
+  <p>
+    Por eso no te mostramos un aviso de cookies al entrar. Solo usamos almacenamiento técnico, necesario para que la web
+    funcione, que la ley exime de consentimiento:
+  </p>
+  <table>
+    <thead>
+      <tr><th scope="col">Nombre</th><th scope="col">Para qué sirve</th><th scope="col">Duración</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>agroclima-formulario (almacenamiento local)</td>
+        <td>Guarda en tu propio navegador lo que escribes en el formulario, para que no lo pierdas si se corta la conexión. Se borra al enviarlo.</td>
+        <td>Hasta que envías el formulario</td>
+      </tr>
+      <tr>
+        <td>Cloudflare Turnstile</td>
+        <td>Comprueba que el formulario lo envía una persona y no un robot.</td>
+        <td>Sesión</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Estadísticas de visitas</h2>
+  <p>
+    Si medimos las visitas, lo hacemos con una herramienta que no usa cookies ni identifica a las personas. [PENDIENTE:
+    confirmar la herramienta elegida.]
+  </p>
+
+  <h2>Mapa</h2>
+  <p>
+    El mapa de la zona se carga desde los servidores de OpenStreetMap cuando llegas a esa parte de la página, lo que
+    implica que reciben tu dirección IP para enviarte las imágenes del mapa.
+  </p>
+
+  <h2>Cómo borrar el almacenamiento</h2>
+  <p>Puedes borrar los datos guardados por esta web desde la configuración de privacidad de tu navegador.</p>
+</TextoLegal>

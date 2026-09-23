@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import PanelClima from '../components/clima/PanelClima.svelte';
+---
+
+<Base
+  titulo="Datos climáticos"
+  descripcion="Ejemplo del panel de datos climáticos de AgroClima: temperatura, humedad, lluvia, viento, gráficos de 24 horas e indicadores agronómicos de una finca de Lleida."
+>
+  <div class="contenedor pagina">
+    <PanelClima client:load />
+
+    <section class="llamada">
+      <div>
+        <h2>¿Quieres ver estos datos de tu propia finca?</h2>
+        <p>Instalamos la estación y te damos acceso a tu panel y a las alertas.</p>
+      </div>
+      <div class="botones">
+        <a class="btn btn-claro" href="/servicios/estaciones-meteorologicas">Cómo funciona</a>
+        <a class="btn btn-principal btn-grande" href="/contacto?servicio=Estaciones%20meteorol%C3%B3gicas#formulario">Pedir presupuesto</a>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .pagina {
+    padding-block: 40px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .llamada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 36px 44px;
+    border-radius: 28px;
+    background: var(--verde-oscuro);
+    color: #f2f5ef;
+  }
+  .llamada h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    margin-bottom: 8px;
+  }
+  .llamada p {
+    color: #d5e0d1;
+  }
+  .botones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 800px) {
+    .llamada {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 24px 20px;
+    }
+    .botones .btn {
+      flex-grow: 1;
+    }
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import Foto from '../components/Foto.astro';
+import { sitio } from '../data/sitio';
+---
+
+<Base
+  titulo="Sobre AgroClima"
+  descripcion="Jordi Puig, ingeniero agrónomo, fundó AgroClima Consultores en Lleida para que las decisiones del campo se tomen con datos de la propia finca."
+>
+  <section class="contenedor seccion sobre">
+    <div class="imagen"><Foto descripcion="Jordi Puig revisando una estación en una finca" alto="520px" /></div>
+    <div class="texto">
+      <p class="antetitulo">Sobre AgroClima</p>
+      <h1>Soy Jordi Puig, ingeniero agrónomo, y trabajo contigo en tu finca</h1>
+      <p>
+        Fundé AgroClima Consultores en Lleida para que las decisiones del campo se tomen con los datos de tu propia
+        parcela, no solo con la previsión general. Una helada, una tormenta o una semana de humedad pueden cambiar una
+        campaña, y con buena información se puede actuar a tiempo.
+      </p>
+      <p>
+        Trabajo con agricultores y cooperativas de {sitio.zona.join(', ')}: instalo y mantengo estaciones
+        meteorológicas, envío alertas, preparo informes mensuales y asesoro en persona o a distancia.
+      </p>
+      <p class="pendiente">[PENDIENTE: 1–2 frases de Jordi sobre su trayectoria y por qué se dedica a esto]</p>
+      <dl class="cifras">
+        <div><dt>años de experiencia</dt><dd>[AÑOS]</dd></div>
+        <div><dt>estaciones instaladas</dt><dd>[N]</dd></div>
+        <div><dt>cooperativas y fincas</dt><dd>[N]</dd></div>
+      </dl>
+      <a class="btn btn-principal btn-grande" href="/contacto">Hablemos de tu finca</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sobre {
+    display: grid;
+    grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+  }
+  .imagen {
+    border-radius: 28px;
+    overflow: hidden;
+    position: sticky;
+    top: 104px;
+  }
+  .texto {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 680px;
+  }
+  h1 {
+    font-size: clamp(32px, 4vw, 46px);
+  }
+  .texto > p:not(.antetitulo) {
+    font-size: 18px;
+    color: var(--tinta-2);
+  }
+  .pendiente {
+    font-style: italic;
+  }
+  .cifras {
+    margin: 8px 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .cifras div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 4px;
+  }
+  .cifras dd {
+    margin: 0;
+    font-family: var(--f-titulo);
+    font-weight: 600;
+    font-size: 34px;
+    color: var(--verde);
+  }
+  .cifras dt {
+    font-size: 15px;
+    color: var(--suave);
+  }
+  .texto .btn {
+    align-self: flex-start;
+  }
+  @media (max-width: 900px) {
+    .sobre {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .imagen {
+      position: static;
+    }
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icono from './Icono.astro';
+
+interface Props {
+  servicio: CollectionEntry<'servicios'>;
+}
+const { servicio } = Astro.props;
+const { titulo, resumen, beneficios, icono } = servicio.data;
+const solicitar = `/contacto?servicio=${encodeURIComponent(servicio.data.tituloCorto)}#formulario`;
+---
+
+<article class="tarjeta servicio">
+  <span class="icono"><Icono nombre={icono} tamano={26} grosor={1.8} /></span>
+  <h3><a href={`/servicios/${servicio.id}`}>{titulo}</a></h3>
+  <p class="resumen">{resumen}</p>
+  <ul>
+    {
+      beneficios.map((b) => (
+        <li>
+          <Icono nombre="check" tamano={20} grosor={2.4} />
+          <span>{b}</span>
+        </li>
+      ))
+    }
+  </ul>
+  <a class="btn btn-verde" href={solicitar}>Solicitar información</a>
+</article>
+
+<style>
+  .servicio {
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+  }
+  .icono {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: var(--verde-claro);
+    color: var(--verde);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  h3 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  h3 a {
+    color: var(--tinta);
+    text-decoration: none;
+  }
+  h3 a:hover {
+    color: var(--verde);
+    text-decoration: underline;
+  }
+  .resumen {
+    font-size: 16px;
+    color: var(--tinta-2);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+  }
+  li {
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  li :global(svg) {
+    flex-shrink: 0;
+    color: var(--verde);
+  }
+</style>

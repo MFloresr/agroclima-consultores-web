@@ -1,0 +1,296 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Icono from '../components/Icono.astro';
+import Foto from '../components/Foto.astro';
+import TarjetaServicio from '../components/TarjetaServicio.astro';
+import TarjetaCaso from '../components/TarjetaCaso.astro';
+import SeccionContacto from '../components/SeccionContacto.astro';
+import ResumenClima from '../components/clima/ResumenClima.svelte';
+import { sitio } from '../data/sitio';
+
+const servicios = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+const casos = (await getCollection('casos')).sort((a, b) => a.data.orden - b.data.orden);
+
+const cultivos = [
+  { nombre: 'Frutal', icono: 'frutal' },
+  { nombre: 'Viñedo', icono: 'vinedo' },
+  { nombre: 'Cereal', icono: 'cereal' },
+  { nombre: 'Olivo', icono: 'olivo' },
+] as const;
+---
+
+<Base titulo={sitio.nombre}>
+  <section class="contenedor portada">
+    <div class="texto-portada">
+      <p class="antetitulo">Consultoría meteorológica agrícola · Lleida</p>
+      <h1>El clima de tu finca, medido y explicado para decidir mejor</h1>
+      <p class="entrada">
+        Instalamos estaciones meteorológicas en tu explotación, te avisamos por WhatsApp y email de heladas, lluvias
+        intensas y viento fuerte, y te ayudamos a decidir riegos, tratamientos y cosecha. Para agricultores y cooperativas
+        de frutal, viñedo, cereal y olivo.
+      </p>
+      <div class="botones">
+        <a class="btn btn-principal btn-grande" href="/contacto">Pedir presupuesto</a>
+        <a class="btn btn-borde btn-grande" href="/datos-climaticos">Ver datos de ejemplo</a>
+      </div>
+      <p class="confianza">Ingeniero agrónomo · {sitio.zona.join(', ')}</p>
+    </div>
+    <div class="imagen-portada">
+      <Foto descripcion="Estación meteorológica en una finca de frutales al amanecer" alto="100%" />
+    </div>
+  </section>
+
+  <section class="contenedor" aria-labelledby="titulo-cultivos">
+    <div class="cultivos">
+      <h2 id="titulo-cultivos">Trabajamos con</h2>
+      <ul>
+        {
+          cultivos.map((c) => (
+            <li>
+              <Icono nombre={c.icono} tamano={28} grosor={1.8} />
+              {c.nombre}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="servicios" class="contenedor seccion">
+    <div class="cabecera-seccion">
+      <p class="antetitulo">Servicios</p>
+      <h2>Lo que hacemos por tu explotación</h2>
+    </div>
+    <div class="rejilla-servicios">
+      {servicios.map((s) => <TarjetaServicio servicio={s} />)}
+    </div>
+  </section>
+
+  <section class="contenedor" aria-labelledby="titulo-datos">
+    <div class="bloque-datos">
+      <div class="texto-datos">
+        <p class="antetitulo">Ejemplo de datos climáticos</p>
+        <h2 id="titulo-datos">Así verás lo que pasa en tu finca, hora a hora</h2>
+        <p>
+          Temperatura, humedad, lluvia y viento medidos por tu propia estación, con gráficos de las últimas 24 horas y
+          avisos cuando toca actuar.
+        </p>
+        <div class="botones">
+          <a class="btn btn-claro" href="/datos-climaticos">Ver el panel completo</a>
+          <span class="marca-ejemplo">Datos de ejemplo</span>
+        </div>
+      </div>
+      <ResumenClima client:visible />
+    </div>
+  </section>
+
+  <section id="casos" class="contenedor seccion">
+    <div class="cabecera-seccion">
+      <p class="antetitulo">Casos de éxito</p>
+      <h2>Agricultores de la zona que ya deciden con datos</h2>
+    </div>
+    <div class="rejilla-casos">
+      {casos.map((c) => <TarjetaCaso caso={c} />)}
+    </div>
+  </section>
+
+  <section id="sobre" class="contenedor sobre">
+    <div class="imagen-sobre"><Foto descripcion="Jordi Puig revisando una estación en una finca" alto="440px" /></div>
+    <div class="texto-sobre">
+      <p class="antetitulo">Sobre AgroClima</p>
+      <h2>Soy Jordi Puig, ingeniero agrónomo, y trabajo contigo en tu finca</h2>
+      <p>
+        Fundé AgroClima Consultores en Lleida para que las decisiones del campo se tomen con los datos de tu propia
+        parcela, no solo con la previsión general.
+      </p>
+      <a class="enlace-flecha" href="/sobre-agroclima">Conoce AgroClima <Icono nombre="flecha" tamano={18} /></a>
+    </div>
+  </section>
+
+  <SeccionContacto />
+</Base>
+
+<style>
+  .portada {
+    display: grid;
+    grid-template-columns: minmax(0, 620px) minmax(0, 1fr);
+    gap: 64px;
+    align-items: center;
+    padding-block: clamp(32px, 6vw, 72px) clamp(40px, 6vw, 80px);
+  }
+  .texto-portada {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  h1 {
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .entrada {
+    font-size: clamp(17px, 1.6vw, 19px);
+    color: var(--tinta-2);
+  }
+  .botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .confianza {
+    color: var(--suave);
+    font-size: 15px;
+  }
+  .imagen-portada {
+    height: 540px;
+    border-radius: 28px;
+    overflow: hidden;
+  }
+  .cultivos {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    padding: 26px 40px;
+    border-radius: 24px;
+    background: var(--verde-claro);
+  }
+  .cultivos h2 {
+    font-family: var(--f-texto);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--verde);
+    flex-shrink: 0;
+  }
+  .cultivos ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .cultivos li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .cultivos li :global(svg) {
+    color: var(--verde);
+  }
+  .rejilla-servicios {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .bloque-datos {
+    display: grid;
+    grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+    gap: 56px;
+    align-items: center;
+    padding: clamp(24px, 5vw, 64px);
+    border-radius: 32px;
+    background: var(--verde-oscuro);
+    color: #f2f5ef;
+  }
+  .texto-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .texto-datos .antetitulo {
+    color: var(--verde-texto-claro);
+  }
+  .texto-datos h2 {
+    font-size: clamp(30px, 3.5vw, 40px);
+  }
+  .texto-datos p:not(.antetitulo) {
+    color: #d5e0d1;
+  }
+  .marca-ejemplo {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .rejilla-casos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .sobre {
+    display: grid;
+    grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+    gap: 64px;
+    align-items: center;
+  }
+  .imagen-sobre {
+    border-radius: 28px;
+    overflow: hidden;
+  }
+  .texto-sobre {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .texto-sobre h2 {
+    font-size: clamp(30px, 3.5vw, 40px);
+  }
+  .texto-sobre p:not(.antetitulo) {
+    font-size: 18px;
+    color: var(--tinta-2);
+  }
+  .enlace-flecha {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+  }
+
+  @media (max-width: 1100px) {
+    .rejilla-servicios {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .portada,
+    .bloque-datos,
+    .sobre {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .imagen-portada {
+      height: 300px;
+      order: -1;
+    }
+  }
+  @media (max-width: 700px) {
+    .rejilla-servicios,
+    .rejilla-casos {
+      grid-template-columns: 1fr;
+    }
+    .cultivos {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px;
+    }
+    .cultivos ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+    .cultivos li {
+      font-size: 16px;
+    }
+    .botones .btn {
+      flex-grow: 1;
+    }
+    .imagen-portada {
+      height: 230px;
+    }
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+import Logo from './Logo.astro';
+import { navegacion, sitio } from '../data/sitio';
+---
+
+<footer class="pie">
+  <div class="contenedor rejilla">
+    <div class="marca">
+      <Logo claro />
+      <p>Consultoría meteorológica agrícola para agricultores y cooperativas de {sitio.zona.join(', ')}.</p>
+    </div>
+    <nav aria-label="Pie de página">
+      <ul>
+        {navegacion.map((item) => <li><a href={item.href}>{item.texto}</a></li>)}
+      </ul>
+    </nav>
+    <div class="contacto">
+      <a href={sitio.telefonoEnlace}>{sitio.telefono}</a>
+      <a href={`mailto:${sitio.email}`}>{sitio.email}</a>
+      <span>{sitio.localidad}</span>
+    </div>
+  </div>
+  <div class="contenedor legal">
+    <span>© {sitio.anio} {sitio.nombre}</span>
+    <nav aria-label="Legal">
+      <a href="/aviso-legal">Aviso legal</a>
+      <a href="/privacidad">Privacidad</a>
+      <a href="/cookies">Cookies</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    background: var(--tinta);
+    color: #d5e0d1;
+    padding-top: 48px;
+    font-size: 15px;
+  }
+  .pie a {
+    color: #d5e0d1;
+  }
+  .pie a:hover {
+    color: var(--blanco);
+  }
+  .rejilla {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+  }
+  .marca {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 420px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .legal {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-block: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .legal nav {
+    display: flex;
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .pie {
+      padding-bottom: 88px;
+    }
+    .rejilla {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

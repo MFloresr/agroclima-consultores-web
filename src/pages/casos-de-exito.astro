@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import TarjetaCaso from '../components/TarjetaCaso.astro';
+
+const casos = (await getCollection('casos')).sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<Base
+  titulo="Casos de éxito"
+  descripcion="Cooperativas y agricultores de Lleida que toman decisiones con los datos de su propia finca gracias a AgroClima."
+>
+  <section class="contenedor seccion">
+    <div class="cabecera-seccion">
+      <p class="antetitulo">Casos de éxito</p>
+      <h1>Agricultores de la zona que ya deciden con datos</h1>
+      <p>Ejemplos reales de cómo las estaciones, las alertas y el asesoramiento se traducen en resultados en el campo.</p>
+    </div>
+    <div class="rejilla">
+      {casos.map((c) => <TarjetaCaso caso={c} />)}
+    </div>
+    <div class="final">
+      <p>¿Quieres que tu finca sea el próximo caso?</p>
+      <a class="btn btn-principal btn-grande" href="/contacto">Pedir presupuesto</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    font-size: clamp(34px, 4.5vw, 52px);
+  }
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .final {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: var(--f-titulo);
+    font-size: 24px;
+    font-weight: 600;
+  }
+  @media (max-width: 700px) {
+    .rejilla {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

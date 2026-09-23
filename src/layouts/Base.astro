@@ -1,0 +1,66 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/dm-sans';
+import '../styles/global.css';
+import Cabecera from '../components/Cabecera.astro';
+import Pie from '../components/Pie.astro';
+import BarraMovil from '../components/BarraMovil.astro';
+import { sitio } from '../data/sitio';
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  sinIndexar?: boolean;
+}
+
+const { titulo, descripcion = sitio.descripcion, sinIndexar = false } = Astro.props;
+const tituloCompleto = titulo === sitio.nombre ? titulo : `${titulo} · ${sitio.nombre}`;
+const canonica = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonica} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#2F5D3A" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={sitio.nombre} />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonica} />
+    {sinIndexar && <meta name="robots" content="noindex" />}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <Cabecera />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Pie />
+    <BarraMovil />
+  </body>
+</html>
+
+<style>
+  .saltar {
+    position: absolute;
+    left: 16px;
+    top: -60px;
+    z-index: 50;
+    padding: 12px 16px;
+    background: var(--verde);
+    color: var(--blanco);
+    border-radius: 8px;
+  }
+  .saltar:focus {
+    top: 12px;
+    color: var(--blanco);
+  }
+</style>

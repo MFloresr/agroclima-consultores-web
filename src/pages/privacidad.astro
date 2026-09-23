@@ -1,0 +1,55 @@
+---
+import TextoLegal from '../components/TextoLegal.astro';
+import { sitio } from '../data/sitio';
+---
+
+<TextoLegal titulo="Política de privacidad" actualizado="octubre de 2026">
+  <h2>Responsable del tratamiento</h2>
+  <p>
+    Jordi Puig Corbacho ({sitio.nombre}), NIF [NIF DEL TITULAR], con domicilio en [DOMICILIO PROFESIONAL], Lleida.
+    Email: <a href={`mailto:${sitio.email}`}>{sitio.email}</a>.
+  </p>
+
+  <h2>Qué datos tratamos y para qué</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Datos</th><th scope="col">Finalidad</th><th scope="col">Base legal</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Nombre, teléfono, email, tipo de cultivo, hectáreas, si tienes estación y tu mensaje</td>
+        <td>Responder a tu solicitud y, si lo pides, prepararte un presupuesto</td>
+        <td>Tu consentimiento al enviar el formulario y la aplicación de medidas precontractuales</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>No usamos tus datos para enviarte publicidad ni tomamos decisiones automatizadas sobre ti.</p>
+
+  <h2>Cuánto tiempo los guardamos</h2>
+  <p>
+    Mientras gestionamos tu solicitud y, si no llegamos a trabajar juntos, un máximo de [PLAZO, p. ej. 12 meses]. Si
+    contratas un servicio, durante la relación comercial y los plazos que exija la ley.
+  </p>
+
+  <h2>Quién más accede a los datos</h2>
+  <p>No cedemos tus datos a terceros. Los tratan, por cuenta nuestra y con contrato, estos proveedores técnicos:</p>
+  <ul>
+    <li>Supabase: base de datos donde se guardan las solicitudes, alojada en servidores de la Unión Europea.</li>
+    <li>Resend: envío del aviso de tu solicitud por email.</li>
+    <li>Vercel: alojamiento de la web.</li>
+    <li>Cloudflare Turnstile: protección del formulario frente a robots.</li>
+    <li>El desarrollador de la web, solo para su mantenimiento.</li>
+  </ul>
+  <p>
+    Algunos de estos proveedores tienen sede en Estados Unidos. Las transferencias se amparan en el Marco de Privacidad de
+    Datos UE-EE. UU. o en las cláusulas contractuales tipo de la Comisión Europea. [PENDIENTE: comprobar con el asesor.]
+  </p>
+
+  <h2>Tus derechos</h2>
+  <p>
+    Puedes pedir el acceso, la rectificación o la supresión de tus datos, oponerte a su tratamiento, limitarlo o pedir su
+    portabilidad, y retirar tu consentimiento en cualquier momento. Escríbenos a
+    <a href={`mailto:${sitio.email}`}>{sitio.email}</a>. Si crees que no hemos atendido bien tu solicitud, puedes reclamar
+    ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" rel="noopener">www.aepd.es</a>).
+  </p>
+</TextoLegal>

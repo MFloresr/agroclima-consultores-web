@@ -1,0 +1,184 @@
+---
+import Logo from './Logo.astro';
+import Icono from './Icono.astro';
+import { navegacion, sitio } from '../data/sitio';
+
+const ruta = Astro.url.pathname.replace(/\/$/, '') || '/';
+const activo = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
+---
+
+<header class="cabecera">
+  <div class="contenedor fila">
+    <a href="/" class="enlace-logo" aria-label="AgroClima Consultores, inicio">
+      <Logo />
+    </a>
+
+    <nav id="menu-principal" class="menu" aria-label="Principal">
+      <ul>
+        {
+          navegacion.map((item) => (
+            <li>
+              <a href={item.href} aria-current={activo(item.href) ? 'page' : undefined}>
+                {item.texto}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="acciones-menu">
+        <a class="btn btn-borde" href={sitio.whatsapp} rel="noopener">
+          <Icono nombre="whatsapp" tamano={18} />
+          WhatsApp
+        </a>
+        <a class="btn btn-principal" href="/contacto">Pedir presupuesto</a>
+      </div>
+    </nav>
+
+    <button class="boton-menu" type="button" aria-expanded="false" aria-controls="menu-principal">
+      <span class="abrir"><Icono nombre="menu" tamano={22} /></span>
+      <span class="cerrar"><Icono nombre="cerrar" tamano={22} /></span>
+      <span class="solo-lectores">Menú</span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const boton = document.querySelector<HTMLButtonElement>('.boton-menu');
+  const menu = document.getElementById('menu-principal');
+  boton?.addEventListener('click', () => {
+    const abierto = boton.getAttribute('aria-expanded') === 'true';
+    boton.setAttribute('aria-expanded', String(!abierto));
+    menu?.classList.toggle('abierto', !abierto);
+    document.body.classList.toggle('menu-abierto', !abierto);
+  });
+</script>
+
+<style>
+  .cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    /* Sin backdrop-filter: convertiría a la cabecera en el contenedor del menú móvil fijo */
+    background: var(--arena);
+    border-bottom: 1px solid var(--linea);
+  }
+  .fila {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 80px;
+  }
+  .enlace-logo {
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .menu {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 28px;
+    flex-grow: 1;
+  }
+  .menu ul a {
+    color: var(--tinta);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 0;
+  }
+  .menu ul a:hover {
+    color: var(--verde);
+  }
+  .menu ul a[aria-current='page'] {
+    color: var(--verde);
+    font-weight: 700;
+    box-shadow: inset 0 -2px 0 var(--verde);
+  }
+  .acciones-menu {
+    display: flex;
+    gap: 12px;
+  }
+  .boton-menu {
+    display: none;
+  }
+
+  @media (max-width: 1100px) {
+    .menu ul {
+      gap: 18px;
+      font-size: 15px;
+    }
+    .acciones-menu .btn-borde {
+      display: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .fila {
+      min-height: 68px;
+      justify-content: space-between;
+    }
+    .boton-menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 24px;
+      background: var(--verde-claro);
+      color: var(--tinta);
+      cursor: pointer;
+    }
+    .boton-menu .cerrar,
+    .boton-menu[aria-expanded='true'] .abrir {
+      display: none;
+    }
+    .boton-menu[aria-expanded='true'] .cerrar {
+      display: flex;
+    }
+    .menu {
+      display: none;
+      position: fixed;
+      inset: 68px 0 0 0;
+      background: var(--arena);
+      flex-direction: column;
+      align-items: stretch;
+      padding: 24px var(--margen);
+      overflow-y: auto;
+    }
+    .menu.abierto {
+      display: flex;
+    }
+    .menu ul {
+      flex-direction: column;
+      gap: 0;
+      flex-grow: 0;
+      font-size: 20px;
+    }
+    .menu ul a {
+      display: block;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--linea);
+    }
+    .menu ul a[aria-current='page'] {
+      box-shadow: none;
+    }
+    .acciones-menu {
+      flex-direction: column;
+      margin-top: 24px;
+    }
+    .acciones-menu .btn-borde {
+      display: inline-flex;
+    }
+  }
+
+  :global(body.menu-abierto) {
+    overflow: hidden;
+  }
+</style>

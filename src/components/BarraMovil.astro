@@ -1,0 +1,65 @@
+---
+import Icono from './Icono.astro';
+import { sitio } from '../data/sitio';
+---
+
+<nav class="barra-movil" aria-label="Contacto rápido">
+  <a href={sitio.telefonoEnlace}>
+    <Icono nombre="telefono" tamano={20} />
+    Llamar
+  </a>
+  <a href={sitio.whatsapp} rel="noopener">
+    <Icono nombre="whatsapp" tamano={20} />
+    WhatsApp
+  </a>
+  <a href="/contacto" class="destacado">
+    <Icono nombre="presupuesto" tamano={20} />
+    Presupuesto
+  </a>
+</nav>
+
+<style>
+  .barra-movil {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .barra-movil {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 15;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+      background: var(--blanco);
+      border-top: 1px solid var(--linea);
+      box-shadow: 0 -6px 18px rgba(30, 42, 34, 0.1);
+    }
+    a {
+      min-height: 52px;
+      border-radius: 14px;
+      background: var(--verde-claro);
+      color: var(--tinta);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    a :global(svg) {
+      color: var(--verde);
+    }
+    .destacado {
+      background: var(--naranja);
+      color: var(--blanco);
+    }
+    .destacado :global(svg) {
+      color: var(--blanco);
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+// Blog preparado para una segunda fase. Solo se generan los artículos con borrador: false,
+// y no hay enlace en el menú hasta que AgroClima publique el primero.
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const articulos = await getCollection('articulos', ({ data }) => !data.borrador);
+  return articulos.map((articulo) => ({ params: { slug: articulo.id }, props: { articulo } }));
+}
+
+interface Props {
+  articulo: CollectionEntry<'articulos'>;
+}
+
+const { articulo } = Astro.props;
+const { Content } = await render(articulo);
+const fecha = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(articulo.data.fecha);
+---
+
+<Base titulo={articulo.data.titulo} descripcion={articulo.data.resumen}>
+  <article class="contenedor seccion articulo">
+    <p class="antetitulo">Blog · {fecha}</p>
+    <h1>{articulo.data.titulo}</h1>
+    <div class="texto"><Content /></div>
+  </article>
+</Base>
+
+<style>
+  .articulo {
+    max-width: 780px;
+  }
+  h1 {
+    font-size: clamp(32px, 4.5vw, 48px);
+    margin: 12px 0 32px;
+  }
+  .texto {
+    font-size: 18px;
+    color: var(--tinta-2);
+  }
+  .texto :global(p) {
+    margin-bottom: 16px;
+  }
+  .texto :global(h2) {
+    font-size: 28px;
+    margin: 32px 0 12px;
+    color: var(--tinta);
+  }
+</style>

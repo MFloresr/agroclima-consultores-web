@@ -1,0 +1,53 @@
+---
+// Logo provisional. PENDIENTE: sustituir por el logo oficial de AgroClima (verde oscuro y naranja).
+interface Props {
+  tamano?: number;
+  claro?: boolean;
+}
+const { tamano = 40, claro = false } = Astro.props;
+---
+
+<span class:list={['logo', { claro }]}>
+  <svg width={tamano} height={tamano} viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <circle cx="20" cy="20" r="19" fill="#2F5D3A"></circle>
+    <circle cx="27" cy="14" r="5" fill="#E9A23B"></circle>
+    <path d="M7 27c5-4 9-4 13 0s8 4 13 0" stroke="#F6F1E7" stroke-width="2.4" stroke-linecap="round"></path>
+    <path d="M7 32c5-3 9-3 13 0s8 3 13 0" stroke="#A9C79B" stroke-width="2.4" stroke-linecap="round"></path>
+  </svg>
+  <span class="texto">
+    <span class="nombre">AgroClima</span>
+    <span class="apellido">Consultores</span>
+  </span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--tinta);
+  }
+  .texto {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .nombre {
+    font-family: var(--f-titulo);
+    font-weight: 600;
+    font-size: 22px;
+  }
+  .apellido {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--suave);
+  }
+  .claro {
+    color: var(--arena);
+  }
+  .claro .apellido {
+    color: #d5e0d1;
+  }
+</style>

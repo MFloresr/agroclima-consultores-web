@@ -1,0 +1,28 @@
+---
+import { iconos, type NombreIcono } from '../data/iconos';
+
+interface Props {
+  nombre: NombreIcono;
+  tamano?: number;
+  grosor?: number;
+  class?: string;
+}
+
+const { nombre, tamano = 20, grosor = 2, class: clase } = Astro.props;
+---
+
+<svg
+  class={clase}
+  width={tamano}
+  height={tamano}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={grosor}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={iconos[nombre]}></path>
+</svg>

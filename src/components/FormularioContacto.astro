@@ -1,0 +1,317 @@
+---
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+import { CULTIVOS } from '../data/cultivos';
+
+const errorInicial = Astro.url.searchParams.get('error');
+---
+
+<form id="formulario" class="formulario" method="post" action="/api/contacto" novalidate>
+  <p class="estado" role="status" aria-live="polite" data-estado hidden={!errorInicial}>{errorInicial}</p>
+
+  <fieldset class="cultivos">
+    <legend>Tipo de cultivo</legend>
+    <div class="opciones">
+      {
+        CULTIVOS.map((cultivo, i) => (
+          <label class="chip">
+            <input type="radio" name="cultivo" value={cultivo} required checked={i === 0} />
+            <span>{cultivo}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <div class="dos-columnas">
+    <label class="campo">
+      Hectáreas aproximadas
+      <input name="hectareas" type="text" inputmode="decimal" placeholder="Ej.: 25" autocomplete="off" />
+      <span class="error" data-error="hectareas"></span>
+    </label>
+    <label class="campo">
+      ¿Ya tienes estación meteorológica?
+      <select name="tieneEstacion">
+        <option>No</option>
+        <option>Sí</option>
+        <option>No lo sé</option>
+      </select>
+    </label>
+    <label class="campo">
+      Nombre
+      <input name="nombre" type="text" autocomplete="name" required />
+      <span class="error" data-error="nombre"></span>
+    </label>
+    <label class="campo">
+      Teléfono
+      <input name="telefono" type="tel" inputmode="tel" autocomplete="tel" required />
+      <span class="error" data-error="telefono"></span>
+    </label>
+  </div>
+
+  <label class="campo">
+    Email
+    <input name="email" type="email" autocomplete="email" required />
+    <span class="error" data-error="email"></span>
+  </label>
+
+  <label class="campo">
+    Mensaje
+    <textarea name="mensaje" rows="4" placeholder="Qué necesitas, dónde está la finca, si ya tienes estación…"></textarea>
+  </label>
+
+  <input type="hidden" name="servicio" value="" />
+
+  <!-- Campo trampa para robots: oculto a las personas -->
+  <div class="trampa" aria-hidden="true">
+    <label>No rellenar <input type="text" name="web" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <label class="privacidad">
+    <input type="checkbox" name="privacidad" value="si" required />
+    <span>He leído y acepto la <a href="/privacidad">política de privacidad</a>.</span>
+  </label>
+  <span class="error" data-error="privacidad"></span>
+
+  {
+    PUBLIC_TURNSTILE_SITE_KEY && (
+      <>
+        <div class="cf-turnstile" data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} data-language="es" />
+        <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+      </>
+    )
+  }
+
+  <button type="submit" class="btn btn-principal btn-grande enviar">Enviar solicitud</button>
+  <p class="nota">Te respondemos por teléfono o email. Tus datos solo se usan para atender tu solicitud.</p>
+</form>
+
+<script>
+  const CLAVE = 'agroclima-formulario';
+  const formulario = document.querySelector<HTMLFormElement>('#formulario');
+
+  if (formulario) {
+    const estado = formulario.querySelector<HTMLElement>('[data-estado]')!;
+    const boton = formulario.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const guardables = ['cultivo', 'hectareas', 'tieneEstacion', 'nombre', 'telefono', 'email', 'mensaje'];
+
+    // Servicio de interés desde el botón "Solicitar información" (?servicio=...)
+    const servicio = new URLSearchParams(location.search).get('servicio');
+    const campoServicio = formulario.elements.namedItem('servicio');
+    if (servicio && campoServicio instanceof HTMLInputElement) campoServicio.value = servicio;
+
+    // Recupera lo escrito si se perdió la cobertura o se cerró la página
+    try {
+      const borrador = JSON.parse(localStorage.getItem(CLAVE) ?? '{}') as Record<string, string>;
+      for (const [nombre, valor] of Object.entries(borrador)) {
+        const campo = formulario.elements.namedItem(nombre);
+        if (campo instanceof RadioNodeList) campo.value = valor;
+        else if (campo instanceof HTMLInputElement || campo instanceof HTMLTextAreaElement || campo instanceof HTMLSelectElement) campo.value = valor;
+      }
+    } catch {
+      /* sin almacenamiento disponible: el formulario funciona igual */
+    }
+
+    formulario.addEventListener('input', () => {
+      const datos = new FormData(formulario);
+      const borrador: Record<string, string> = {};
+      for (const nombre of guardables) borrador[nombre] = String(datos.get(nombre) ?? '');
+      try {
+        localStorage.setItem(CLAVE, JSON.stringify(borrador));
+      } catch {
+        /* ignorado */
+      }
+    });
+
+    const mostrarEstado = (texto: string, tipo: 'ok' | 'error') => {
+      estado.hidden = false;
+      estado.textContent = texto;
+      estado.dataset.tipo = tipo;
+    };
+
+    const limpiarErrores = () => {
+      formulario.querySelectorAll<HTMLElement>('[data-error]').forEach((e) => (e.textContent = ''));
+      formulario.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'));
+    };
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      limpiarErrores();
+      boton.disabled = true;
+      boton.textContent = 'Enviando…';
+      try {
+        const respuesta = await fetch(formulario.action, {
+          method: 'POST',
+          body: new FormData(formulario),
+          headers: { Accept: 'application/json' },
+        });
+        const resultado = (await respuesta.json()) as { ok: boolean; mensaje: string; errores?: Record<string, string> };
+        if (resultado.ok) {
+          try {
+            localStorage.removeItem(CLAVE);
+          } catch {
+            /* ignorado */
+          }
+          location.href = '/contacto/gracias';
+          return;
+        }
+        for (const [campo, texto] of Object.entries(resultado.errores ?? {})) {
+          const hueco = formulario.querySelector<HTMLElement>(`[data-error="${campo}"]`);
+          if (hueco) hueco.textContent = texto;
+          const control = formulario.elements.namedItem(campo);
+          if (control instanceof HTMLElement) control.setAttribute('aria-invalid', 'true');
+        }
+        mostrarEstado(resultado.mensaje, 'error');
+      } catch {
+        mostrarEstado('No se ha podido enviar, puede que no haya cobertura. Tus datos siguen aquí: vuelve a intentarlo en un momento o llámanos.', 'error');
+      } finally {
+        boton.disabled = false;
+        boton.textContent = 'Enviar solicitud';
+      }
+    });
+  }
+</script>
+
+<style>
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .estado {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #fdecea;
+    color: #8a1f11;
+    font-weight: 600;
+  }
+  .estado[data-tipo='ok'] {
+    background: var(--verde-claro);
+    color: var(--verde-oscuro);
+  }
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  legend,
+  .campo {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  legend {
+    margin-bottom: 10px;
+  }
+  .opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    position: relative;
+  }
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1.5px solid var(--borde-campo);
+    border-radius: 22px;
+    background: var(--blanco);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .chip input:checked + span {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: var(--blanco);
+  }
+  .chip input:focus-visible + span {
+    outline: 3px solid var(--azul);
+    outline-offset: 2px;
+  }
+  .dos-columnas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+  }
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  input:not([type='radio'], [type='checkbox']),
+  select,
+  textarea {
+    min-height: 50px;
+    padding: 0 14px;
+    border: 1.5px solid var(--borde-campo);
+    border-radius: 12px;
+    background: var(--blanco);
+    color: var(--tinta);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  textarea {
+    padding: 12px 14px;
+    resize: vertical;
+  }
+  [aria-invalid='true'] {
+    border-color: #b3261e !important;
+  }
+  .error {
+    color: #a3190f;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .error:empty {
+    display: none;
+  }
+  .trampa {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .privacidad {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 15px;
+    color: var(--tinta-2);
+  }
+  .privacidad input {
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--verde);
+  }
+  .enviar {
+    align-self: flex-start;
+  }
+  .enviar:disabled {
+    opacity: 0.7;
+    cursor: progress;
+  }
+  .nota {
+    font-size: 14px;
+    color: var(--suave);
+  }
+  @media (max-width: 600px) {
+    .dos-columnas {
+      grid-template-columns: 1fr;
+    }
+    .enviar {
+      align-self: stretch;
+    }
+  }
+</style>

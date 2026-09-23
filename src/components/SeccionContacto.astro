@@ -1,0 +1,113 @@
+---
+import FormularioContacto from './FormularioContacto.astro';
+import MapaZona from './MapaZona.svelte';
+import Icono from './Icono.astro';
+import { sitio } from '../data/sitio';
+
+interface Props {
+  tituloNivel?: 'h1' | 'h2';
+}
+const { tituloNivel = 'h2' } = Astro.props;
+const Titulo = tituloNivel;
+---
+
+<section id="contacto" class="contenedor seccion">
+  <div class="caja tarjeta">
+    <div class="columna-formulario">
+      <div class="cabecera">
+        <Titulo>Cuéntanos qué necesitas</Titulo>
+        <p>Te llamamos para ver tu caso y prepararte un presupuesto sin compromiso.</p>
+      </div>
+      <FormularioContacto />
+    </div>
+    <div class="columna-datos">
+      <div class="accesos">
+        <a href={sitio.telefonoEnlace}><Icono nombre="telefono" tamano={22} />Llamar</a>
+        <a href={sitio.whatsapp} rel="noopener"><Icono nombre="whatsapp" tamano={22} />WhatsApp</a>
+        <a href={`mailto:${sitio.email}`}><Icono nombre="email" tamano={22} />Email</a>
+      </div>
+      <address>
+        {sitio.telefono}<br />
+        <a href={`mailto:${sitio.email}`}>{sitio.email}</a><br />
+        {sitio.localidad}
+      </address>
+      <div>
+        <h3 class="zona">Zona que cubrimos</h3>
+        <p class="comarcas">{sitio.zona.join(', ')} y alrededores de Lleida.</p>
+      </div>
+      <MapaZona client:visible />
+    </div>
+  </div>
+</section>
+
+<style>
+  .caja {
+    padding: clamp(24px, 4vw, 56px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+    gap: 56px;
+    border-radius: 32px;
+  }
+  .cabecera {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .cabecera :is(h1, h2) {
+    font-size: clamp(30px, 4vw, 40px);
+  }
+  .cabecera p {
+    color: var(--tinta-2);
+  }
+  .columna-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .accesos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .accesos a {
+    min-height: 76px;
+    padding: 12px;
+    border-radius: 18px;
+    background: var(--verde-claro);
+    color: var(--tinta);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .accesos a :global(svg) {
+    color: var(--verde);
+  }
+  .accesos a:hover {
+    background: #d6e5c9;
+  }
+  address {
+    font-style: normal;
+    line-height: 1.7;
+    color: var(--tinta-2);
+  }
+  .zona {
+    font-family: var(--f-texto);
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .comarcas {
+    color: var(--tinta-2);
+  }
+  @media (max-width: 1000px) {
+    .caja {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+</style>

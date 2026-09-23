@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Foto from './Foto.astro';
+
+interface Props {
+  caso: CollectionEntry<'casos'>;
+}
+const { caso } = Astro.props;
+const { titulo, cliente, cultivo, comarca, resumen, resultado, resultadoEtiqueta, foto } = caso.data;
+---
+
+<article class="tarjeta caso">
+  <div class="imagen"><Foto descripcion={foto} alto="200px" /></div>
+  <div class="cuerpo">
+    <span class="etiqueta">{cultivo} · {comarca}</span>
+    <h3>{titulo}</h3>
+    <p class="cliente">{cliente}</p>
+    <p>{resumen}</p>
+    <p class="resultado">
+      <strong>{resultado}</strong>
+      <span>{resultadoEtiqueta}</span>
+    </p>
+  </div>
+</article>
+
+<style>
+  .caso {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .imagen {
+    height: 200px;
+  }
+  .cuerpo {
+    padding: 24px 26px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+  }
+  .etiqueta {
+    align-self: flex-start;
+  }
+  h3 {
+    font-size: 23px;
+    line-height: 1.25;
+  }
+  .cliente {
+    font-weight: 600;
+    color: var(--suave);
+  }
+  .cuerpo > p:not(.cliente, .resultado) {
+    color: var(--tinta-2);
+  }
+  .resultado {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--linea);
+  }
+  .resultado strong {
+    font-family: var(--f-titulo);
+    font-size: 32px;
+    color: var(--verde);
+  }
+  .resultado span {
+    font-size: 14px;
+    color: var(--suave);
+  }
+</style>

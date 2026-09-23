@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icono from '../../components/Icono.astro';
+import { sitio } from '../../data/sitio';
+---
+
+<Base titulo="Solicitud recibida" sinIndexar>
+  <section class="contenedor seccion gracias">
+    <span class="icono"><Icono nombre="check" tamano={36} grosor={2.4} /></span>
+    <h1>Hemos recibido tu solicitud</h1>
+    <p>Gracias. Te llamaremos o escribiremos en breve para ver tu caso.</p>
+    <p>
+      Si es urgente, llámanos al <a href={sitio.telefonoEnlace}>{sitio.telefono}</a> o escríbenos por
+      <a href={sitio.whatsapp} rel="noopener">WhatsApp</a>.
+    </p>
+    <div class="botones">
+      <a class="btn btn-verde" href="/">Volver al inicio</a>
+      <a class="btn btn-borde" href="/datos-climaticos">Ver datos de ejemplo</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .gracias {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+    min-height: 60vh;
+    justify-content: center;
+  }
+  .icono {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--verde-claro);
+    color: var(--verde);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  h1 {
+    font-size: clamp(32px, 4vw, 44px);
+  }
+  p {
+    font-size: 18px;
+    color: var(--tinta-2);
+    max-width: 560px;
+  }
+  .botones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TarjetaServicio from '../../components/TarjetaServicio.astro';
+
+const servicios = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<Base
+  titulo="Servicios"
+  descripcion="Estaciones meteorológicas, alertas de heladas y lluvias, informes climáticos mensuales y asesoramiento para fincas de Lleida."
+>
+  <section class="contenedor seccion">
+    <div class="cabecera-seccion">
+      <p class="antetitulo">Servicios</p>
+      <h1>Lo que hacemos por tu explotación</h1>
+      <p>
+        Cuatro servicios que se pueden contratar por separado o combinados, pensados para frutal, viñedo, cereal y olivo.
+      </p>
+    </div>
+    <div class="rejilla">
+      {servicios.map((s) => <TarjetaServicio servicio={s} />)}
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    font-size: clamp(34px, 4.5vw, 52px);
+  }
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  @media (max-width: 700px) {
+    .rejilla {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
