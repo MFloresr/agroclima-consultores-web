@@ -1,3 +1,5 @@
+// Documento único «Sobre AgroClima»: presentación, texto, cifras destacadas y foto.
+
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {UserIcon} from '@sanity/icons/User'
 import {campoFoto} from './imagen'

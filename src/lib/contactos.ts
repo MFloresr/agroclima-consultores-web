@@ -18,6 +18,7 @@ const texto = (max: number) =>
     .trim()
     .max(max, `Máximo ${max} caracteres`);
 
+/** Reglas de validación del formulario (Zod). Los mensajes de error se muestran tal cual al usuario. */
 export const esquemaContacto = z.object({
   cultivo: z.enum(CULTIVOS, { message: 'Elige un tipo de cultivo' }),
   hectareas: z
@@ -50,7 +51,9 @@ interface FilaContacto {
   servicio: string;
 }
 
+/** true si hay credenciales de Supabase: sin ellas no se puede guardar ninguna solicitud. */
 export const almacenConfigurado = () => Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
+/** true si hay clave de Resend para enviar el aviso por email. */
 export const emailConfigurado = () => Boolean(RESEND_API_KEY);
 
 function cabecerasSupabase(extra: Record<string, string> = {}) {
@@ -85,6 +88,7 @@ export async function guardarContacto(c: Contacto, origen: string): Promise<Fila
   return fila;
 }
 
+/** Marca la solicitud como avisada (email_enviado = true) para que el cron no la reenvíe. */
 export async function marcarEmailEnviado(id: string) {
   const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/contactos?id=eq.${encodeURIComponent(id)}`, {
     method: 'PATCH',
@@ -94,6 +98,7 @@ export async function marcarEmailEnviado(id: string) {
   if (!respuesta.ok) throw new Error(`Supabase respondió ${respuesta.status}`);
 }
 
+/** Solicitudes cuyo aviso por email aún no se ha enviado, de la más antigua a la más reciente. */
 export async function contactosSinAviso(limite = 20): Promise<FilaContacto[]> {
   const url = `${SUPABASE_URL}/rest/v1/contactos?email_enviado=eq.false&order=creado.asc&limit=${limite}`;
   const respuesta = await fetch(url, { headers: cabecerasSupabase() });
@@ -142,6 +147,7 @@ export async function enviarAviso(c: {
   }
 }
 
+/** Convierte una fila de la base de datos (snake_case) al formato que espera enviarAviso(). */
 export function filaAContacto(f: FilaContacto) {
   return {
     nombre: f.nombre,

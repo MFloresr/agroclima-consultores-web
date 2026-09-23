@@ -1,4 +1,6 @@
 <script lang="ts">
+  // Panel de datos climáticos de /datos-climaticos. Pide los datos con obtenerDatos(finca)
+  // y reserva desde el principio el espacio de cada bloque para no causar saltos (CLS).
   import { alertaDeEjemplo, fincasEjemplo, fincaPorDefecto, hora, num, obtenerDatos, type DatosEstacion } from '../../lib/clima';
   import GraficoLinea from './GraficoLinea.svelte';
 

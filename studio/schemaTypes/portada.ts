@@ -1,3 +1,5 @@
+// Documento único «Portada»: textos y foto de la parte superior de la home y del bloque de datos.
+
 import {defineField, defineType} from 'sanity'
 import {HomeIcon} from '@sanity/icons/Home'
 import {campoFoto} from './imagen'

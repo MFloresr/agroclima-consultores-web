@@ -1,3 +1,5 @@
+// Servicio: nombre, dirección de su página (slug), icono, resumen, beneficios, texto y SEO.
+
 import {defineField, defineType} from 'sanity'
 import {BulbOutlineIcon} from '@sanity/icons/BulbOutline'
 import {campoTexto} from './texto'

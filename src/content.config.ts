@@ -1,3 +1,6 @@
+// Colecciones de contenido de Astro alimentadas por Sanity (loaders con consultas GROQ).
+// Se ejecutan al compilar; el esquema Zod comprueba que el contenido tenga todos los campos.
+
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { sanity } from './lib/sanity';

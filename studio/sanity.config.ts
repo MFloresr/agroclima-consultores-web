@@ -1,3 +1,6 @@
+// Configuración del panel de Sanity: menú propio (estructura), documentos únicos protegidos,
+// idioma castellano y funciones avanzadas ocultas para que el panel sea sencillo.
+
 import {defineConfig, isDev} from 'sanity'
 import {structureTool, type StructureResolver} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'

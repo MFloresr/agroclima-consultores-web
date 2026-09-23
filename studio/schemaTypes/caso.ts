@@ -1,3 +1,5 @@
+// Caso de éxito: titular, cliente, cultivo, comarca, resultado y foto.
+
 import {defineField, defineType} from 'sanity'
 import {StarIcon} from '@sanity/icons/Star'
 import {campoFoto} from './imagen'

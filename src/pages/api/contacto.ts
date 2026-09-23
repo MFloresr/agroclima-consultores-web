@@ -1,3 +1,8 @@
+// POST /api/contacto: recibe el formulario (JSON o envío nativo).
+// 1) descarta robots (campo trampa + Turnstile), 2) valida con Zod, 3) guarda en Supabase,
+// 4) avisa por email con Resend. Si el email falla, la solicitud ya está guardada y
+// /api/mantenimiento reintenta el aviso. Responde JSON o redirige (303) según la cabecera Accept.
+
 import type { APIRoute } from 'astro';
 import { TURNSTILE_SECRET_KEY } from 'astro:env/server';
 import {

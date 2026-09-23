@@ -1,4 +1,6 @@
 <script lang="ts">
+  // Gráfico de línea de 24 h con uPlot (ligero). Se adapta al ancho con ResizeObserver,
+  // se actualiza al cambiar de finca y muestra el último valor en la leyenda. Accesible vía aria-label.
   import { onMount } from 'svelte';
   import uPlot from 'uplot';
   import 'uplot/dist/uPlot.min.css';

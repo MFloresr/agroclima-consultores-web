@@ -1,3 +1,5 @@
+// Documento único «Datos de contacto»: teléfono, WhatsApp, email, localidad y comarcas.
+
 import {defineField, defineType} from 'sanity'
 import {CogIcon} from '@sanity/icons/Cog'
 

@@ -1,3 +1,5 @@
+// Artículo del blog (preparado para una segunda fase; solo se ve lo publicado en Sanity).
+
 import {defineField, defineType} from 'sanity'
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {campoTexto} from './texto'

@@ -1,3 +1,5 @@
+// Registro de todos los tipos de contenido del panel y lista de documentos únicos.
+
 import {ajustes} from './ajustes'
 import {articulo} from './articulo'
 import {caso} from './caso'

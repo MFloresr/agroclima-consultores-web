@@ -14,10 +14,12 @@ export type * from './tipos';
 const formatoNumero = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1, minimumFractionDigits: 1 });
 const formatoHora = new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' });
 
+/** Número con un decimal y coma decimal española (p. ej. 12,5). */
 export function num(valor: number) {
   return formatoNumero.format(valor);
 }
 
+/** Hora en formato 24 h (p. ej. 07:00) a partir de una marca de tiempo en milisegundos. */
 export function hora(marca: number) {
   return formatoHora.format(new Date(marca));
 }

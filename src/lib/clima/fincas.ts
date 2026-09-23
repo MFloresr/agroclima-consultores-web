@@ -1,3 +1,5 @@
+// Fincas de ejemplo del panel (una por comarca). En la fase 2 serán las estaciones reales de Pessl.
+
 import type { Finca } from './tipos';
 
 // Fincas de ejemplo, una por comarca de la zona que cubre AgroClima.

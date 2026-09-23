@@ -43,6 +43,10 @@ function unico<T>(tipo: string): Promise<T> {
   return cache.get(tipo) as Promise<T>;
 }
 
+/**
+ * Datos de contacto de la web: los editables de Sanity («Datos de contacto») más los fijos
+ * (nombre, descripción), con los enlaces tel: y wa.me ya construidos.
+ */
 export async function obtenerSitio() {
   const a = await unico<Ajustes>('ajustes');
   return {
@@ -58,5 +62,7 @@ export async function obtenerSitio() {
 
 export type Sitio = Awaited<ReturnType<typeof obtenerSitio>>;
 
+/** Textos y foto de la portada (documento único «portada»). */
 export const obtenerPortada = () => unico<Portada>('portada');
+/** Contenido de «Sobre AgroClima» (documento único «sobre»). */
 export const obtenerSobre = () => unico<Sobre>('sobre');

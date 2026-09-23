@@ -1,4 +1,7 @@
 ---
+// Formulario de solicitud de presupuesto. Funciona sin JavaScript (POST nativo a /api/contacto)
+// y, con JavaScript: envía por fetch, muestra errores por campo, guarda un borrador en localStorage
+// por si se corta la cobertura y renueva Cloudflare Turnstile tras un envío fallido.
 import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
 import { CULTIVOS } from '../data/cultivos';
 
