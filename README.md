@@ -83,9 +83,10 @@ El proyecto de Vercel está conectado a este repositorio:
 
 ## Pendiente de AgroClima
 
-- [ ] Logo oficial (sustituir `src/components/Logo.astro` y `public/favicon.svg`)
+- [x] Logo: hoja con línea de datos y sol (`src/components/Logo.astro`, `public/logo/`, `public/favicon.svg`)
 - [ ] Teléfono y número de WhatsApp reales (en el panel: «Datos de contacto»)
-- [ ] Fotos (se suben en el panel; mientras tanto se ve un hueco rayado)
-- [ ] Datos reales de los dos casos de éxito (en el panel)
-- [ ] Años de experiencia, cifras y frase de Jordi (en el panel: «Sobre AgroClima»)
-- [ ] NIF y domicilio en los textos legales, y revisión por un asesor
+- [x] Fotos provisionales de Unsplash (se cambian en el panel)
+- [x] Casos de éxito con datos de ejemplo (se editan en el panel)
+- [x] Cifras y trayectoria en «Sobre AgroClima» (se editan en el panel)
+- [x] NIF y domicilio en los textos legales
+- [ ] Revisión de los textos legales por un asesor

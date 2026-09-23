@@ -44,6 +44,10 @@ html {
 
 body {
   margin: 0;
+  /* El pie de página queda abajo aunque la página sea corta */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--arena);
   color: var(--tinta);
   font-family: var(--f-texto);
