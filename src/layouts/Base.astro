@@ -1,12 +1,13 @@
 ---
 // Plantilla base de todas las páginas: head (SEO, Open Graph, canónica, favicon), fuentes,
-// estilos globales, cabecera, pie y barra móvil. sinIndexar añade noindex (p. ej. /contacto/gracias).
+// estilos globales, aviso de demostración, cabecera, pie y barra móvil. sinIndexar añade noindex (p. ej. /contacto/gracias).
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
 import Cabecera from '../components/Cabecera.astro';
 import Pie from '../components/Pie.astro';
 import BarraMovil from '../components/BarraMovil.astro';
+import AvisoDemo from '../components/AvisoDemo.astro';
 import { sitioFijo as sitio } from '../data/sitio';
 
 interface Props {
@@ -41,6 +42,7 @@ const canonica = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <AvisoDemo />
     <Cabecera />
     <main id="contenido">
       <slot />

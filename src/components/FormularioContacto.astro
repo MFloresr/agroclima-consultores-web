@@ -9,6 +9,10 @@ const errorInicial = Astro.url.searchParams.get('error');
 ---
 
 <form id="formulario" class="formulario" method="post" action="/api/contacto" novalidate>
+  <p class="aviso-formulario">
+    <strong>Formulario de demostración.</strong>{' '}Los mensajes no llegan a ninguna empresa real: los recibe el autor
+    de esta web. No escribas datos personales reales.
+  </p>
   <p class="estado" role="status" aria-live="polite" data-estado hidden={!errorInicial}>{errorInicial}</p>
 
   <fieldset class="cultivos">
@@ -185,6 +189,16 @@ const errorInicial = Astro.url.searchParams.get('error');
 </script>
 
 <style>
+  .aviso-formulario {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--aviso-borde);
+    border-radius: 12px;
+    background: var(--aviso-fondo);
+    color: var(--tinta);
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
   .formulario {
     display: flex;
     flex-direction: column;

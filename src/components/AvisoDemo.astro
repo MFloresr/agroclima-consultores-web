@@ -1,0 +1,41 @@
+---
+// Franja superior que deja claro que la web es un proyecto de demostración
+// (ejercicio académico con un cliente ficticio). Aparece en todas las páginas.
+---
+
+<aside class="aviso-demo" aria-label="Proyecto de demostración">
+  <p>
+    <strong>Proyecto de demostración.</strong>{' '}
+    AgroClima Consultores es una empresa ficticia: esta web es un proyecto académico simulado como encargo
+    profesional completo, desarrollado por Mario Flores.{' '}
+    <a href="https://github.com/MFloresr/agroclima-consultores-web" rel="noopener">Ver el código</a>
+  </p>
+</aside>
+
+<style>
+  .aviso-demo {
+    background: var(--tinta);
+    color: var(--arena);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+  .aviso-demo p {
+    max-width: var(--ancho);
+    margin: 0 auto;
+    padding: 10px var(--margen);
+  }
+  .aviso-demo strong {
+    color: var(--sol);
+  }
+  .aviso-demo a {
+    color: var(--arena);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+  .aviso-demo a:hover,
+  .aviso-demo a:focus-visible {
+    color: var(--sol);
+  }
+</style>
